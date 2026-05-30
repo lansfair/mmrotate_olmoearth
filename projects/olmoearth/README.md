@@ -2,6 +2,16 @@
 
 This project adds a non-invasive MMRotate 1.x integration for OLMoEarth.
 
+## Which OpenMMLab Project
+
+Use the OLMoEarth project that matches the downstream task:
+
+| Task | Project | Typical data |
+| --- | --- | --- |
+| Semantic segmentation | MMSegmentation | masks, valid masks, GeoTIFF manifests |
+| Horizontal-box detection | MMDetection | rslearn detection manifest, VOC/XML DIOR |
+| Oriented-box detection | MMRotate | DOTA txt, DIOR-R oriented XML |
+
 ## What Is Reused
 
 - `OlmoEarthBackbone` builds the released OLMoEarth encoder from `config.json`
@@ -79,8 +89,13 @@ annotations, while DIOR-R provides oriented XML boxes. Some experiments convert
 DIOR or DIOR-R into DOTA-like text files. Pick the config according to the
 actual annotation files on disk:
 
-- `Annotations/*.xml` or `Annotations/Oriented Bounding Boxes/*.xml`:
-  use `DIORDataset`.
+- `Annotations/*.xml` with horizontal `bndbox`:
+  use the MMDetection DIOR config instead.
+- `Annotations/Oriented Bounding Boxes/*.xml` with `robndbox`:
+  use MMRotate `DIORDataset`.
 - `annfiles/*.txt` where each row is
   `x1 y1 x2 y2 x3 y3 x4 y4 class difficult`:
   use `DOTADataset`.
+
+For a more detailed Chinese walkthrough, see
+`projects/olmoearth/docs/mmrotate_migration_zh.md`.
